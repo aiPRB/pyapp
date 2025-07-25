@@ -1,0 +1,21 @@
+name: Build and Push Container
+
+on:
+  workflow_run:
+    workflows: ["Pylint"]
+    types:
+      - completed
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    CR_PAT
+
+    - name: Sign in to the Container registry service
+      run: |
+        echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
