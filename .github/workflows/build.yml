@@ -20,9 +20,10 @@ jobs:
 
     - name: Build container image
       run: |
-        docker build -t ghcr.io/${{ github.repository }}:${{ github.sha }} .
+        name="ghcr.io/${{ github.repository }}:${{ github.sha }}"
+        tr -h
 
     - name: Push container image to the registry
       run: |
-        docker push ghcr.io/${{ github.repository }}:${{ github.sha }}
+        echo $name
 
