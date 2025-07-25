@@ -1,4 +1,4 @@
-name: Build and Push Container
+name: Continuous Integration
 
 on:
   workflow_run:
@@ -10,6 +10,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+
 
     steps:
     - uses: actions/checkout@v4
@@ -18,11 +20,17 @@ jobs:
       run: |
         echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-    - name: Build container image
+    - name: Generate image tag
       run: |
         name="ghcr.io/${{ github.repository }}:${{ github.sha }}"
+        lowercase=$(echo $name | tr '[:upper:]' '[:lower:]')
+        echo "IMGTAG=$lowercase" >> $GITHUB_ENV
+
+    - name: Build container image
+      run: |
+        docker build -t $IMGTAG .
 
     - name: Push container image to the registry
       run: |
-        echo $name
+        docker push $IMGTAG
 
