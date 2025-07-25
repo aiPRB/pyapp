@@ -24,5 +24,6 @@ jobs:
 
     - name: Push container image to the registry
       run: |
-        echo  "GH Sha: ${{ github.sha }}"
+        echo "GH Sha: ${{ github.sha }}"
+        echo "Repo: ${{ github.repository }}"
 
